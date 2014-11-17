@@ -1,0 +1,7 @@
+MX6BOARDS BOARD
+M:	Martin Welford <martin@device.solutions>
+S:	Maintained
+F:	board/devicesolutions/mx6boards/
+F:	include/configs/dsopal6.h
+F:	configs/dsopal6_defconfig
+
