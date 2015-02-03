@@ -613,6 +613,10 @@ config TARGET_EMBESTMX6BOARDS
 	bool "Support embestmx6boards"
 	select CPU_V7
 
+config TARGET_DEVICESOLUTIONSOPAL6BOARDS
+	bool "Support devicesolutionsopal6boards"
+	select CPU_V7
+
 config TARGET_ARISTAINETOS
 	bool "Support aristainetos"
 	select CPU_V7
@@ -889,6 +893,7 @@ source "board/creative/xfi3/Kconfig"
 source "board/davedenx/qong/Kconfig"
 source "board/denx/m28evk/Kconfig"
 source "board/denx/m53evk/Kconfig"
+source "board/devicesolutions/opal6boards/Kconfig"
 source "board/egnite/ethernut5/Kconfig"
 source "board/embest/mx6boards/Kconfig"
 source "board/esd/meesc/Kconfig"

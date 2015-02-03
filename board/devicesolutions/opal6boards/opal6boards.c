@@ -37,7 +37,7 @@
 #include <asm/arch/sys_proto.h>
 DECLARE_GLOBAL_DATA_PTR;
 
-#define UART_PAD_CTRL  (PAD_CTL_PUS_100K_UP |			\
+#define UART_PAD_CTRL  (PAD_CTL_PUS_47K_UP |			\
 	PAD_CTL_SPEED_MED | PAD_CTL_DSE_40ohm |			\
 	PAD_CTL_SRE_FAST  | PAD_CTL_HYS)
 
@@ -488,6 +488,10 @@ static iomux_v3_cfg_t const init_pads[] = {
 	NEW_PAD_CTRL(MX6_PAD_EIM_DA1__GPIO3_IO01, OUTPUT_40OHM),
 	NEW_PAD_CTRL(MX6_PAD_EIM_DA4__GPIO3_IO04, OUTPUT_40OHM),
 	NEW_PAD_CTRL(MX6_PAD_EIM_DA14__GPIO3_IO14, OUTPUT_40OHM),
+
+	/* Spare GPIOs on expansion */
+	NEW_PAD_CTRL(MX6_PAD_GPIO_6__GPIO1_IO06, OUTPUT_40OHM),
+
 };
 
 
@@ -501,6 +505,7 @@ static unsigned gpios_out_low[] = {
 
 static unsigned gpios_out_high[] = {
 	IMX_GPIO_NR(3, 2),	/* MIPI CSI PWRON */
+	IMX_GPIO_NR(1, 6),	/* MIPI CSI PWRON */
 };
 
 static void set_gpios(unsigned *p, int cnt, int val)

@@ -19,10 +19,11 @@
 #include "mx6_common.h"
 #include <linux/sizes.h>
 
+#define CONFIG_SYS_GENERIC_BOARD
+
 #define CONFIG_MXC_UART_BASE		UART4_BASE
 #define CONFIG_CONSOLE_DEV		"ttymxc1"
 #define CONFIG_MMCROOT			"/dev/mmcblk1p1"
-
 #define PHYS_SDRAM_SIZE		(1u * 1024 * 1024 * 1024)
 
 #define CONFIG_MX6
@@ -292,12 +293,13 @@
 
 #define CONFIG_ENV_SIZE			(8 * 1024)
 
+#if defined(CONFIG_ENV_IS_IN_MMC)
 #define CONFIG_DEFAULT_FDT_FILE	"imx6dl-opal-6.dtb"
 #define CONFIG_SYS_FSL_USDHC_NUM	2
 #define CONFIG_SYS_MMC_ENV_DEV		1	/* SDHC4 */
 #define CONFIG_ENV_OFFSET		(6 * 64 * 1024)
 #define CONFIG_SUPPORT_EMMC_BOOT /* eMMC specific */
-
+#endif
 #define CONFIG_OF_LIBFDT
 
 #ifndef CONFIG_SYS_DCACHE_OFF
@@ -321,4 +323,4 @@
 #define CONFIG_IMX_HDMI
 #define CONFIG_IMX_VIDEO_SKIP
 
-#endif                         /* __RIOTBOARD_CONFIG_H */
+#endif                         /* __OPAL6_CONFIG_H */

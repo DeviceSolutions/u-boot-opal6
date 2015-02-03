@@ -1,7 +1,7 @@
-if TARGET_DEVICESOLUTIONSMX6BOARDS
+if TARGET_DEVICESOLUTIONSOPAL6BOARDS
 
 config SYS_BOARD
-	default "mx6boards"
+	default "opal6boards"
 
 config SYS_VENDOR
 	default "devicesolutions"
@@ -10,6 +10,6 @@ config SYS_SOC
 	default "mx6"
 
 config SYS_CONFIG_NAME
-	default "devicesolutionsmx6boards"
+	default "dsopal6"
 
 endif
