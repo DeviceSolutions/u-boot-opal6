@@ -489,6 +489,10 @@ static iomux_v3_cfg_t const init_pads[] = {
 	NEW_PAD_CTRL(MX6_PAD_EIM_DA4__GPIO3_IO04, OUTPUT_40OHM),
 	NEW_PAD_CTRL(MX6_PAD_EIM_DA14__GPIO3_IO14, OUTPUT_40OHM),
 
+	/* PCIe */
+	NEW_PAD_CTRL(MX6_PAD_KEY_ROW2__GPIO4_IO11, OUTPUT_40OHM),
+	NEW_PAD_CTRL(MX6_PAD_NANDF_RB0__GPIO6_IO10, OUTPUT_40OHM),
+
 	/* Spare GPIOs on expansion */
 	NEW_PAD_CTRL(MX6_PAD_GPIO_6__GPIO1_IO06, OUTPUT_40OHM),
 
@@ -501,6 +505,8 @@ static unsigned gpios_out_low[] = {
 	IMX_GPIO_NR(3, 1),	/* LED G2 */
 	IMX_GPIO_NR(3, 4),	/* LED R1 */
 	IMX_GPIO_NR(3, 14),	/* LED R2 */
+	IMX_GPIO_NR(4, 11),	/* PCIE_RST_B */
+	IMX_GPIO_NR(6, 10),	/* PCIE_PWR_EN */		
 };
 
 static unsigned gpios_out_high[] = {

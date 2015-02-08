@@ -58,6 +58,12 @@
 #define CONFIG_SYS_I2C_SPEED		100000
 #define CONFIG_I2C_EDID
 
+/* RTC */
+#define CONFIG_CMD_DATE
+#define CONFIG_RTC_M41T62
+#define CONFIG_SYS_I2C_RTC_ADDR  0x68
+
+
 /* USB Configs */
 #define CONFIG_CMD_USB
 #define CONFIG_USB_EHCI
@@ -328,6 +334,19 @@
 #define CONFIG_G_DNL_VENDOR_NUM 0x0525
 #define CONFIG_G_DNL_PRODUCT_NUM 0xa4a5
 #define CONFIG_G_DNL_MANUFACTURER "Device Solutions"
+
+/* PCI express */
+#define CONFIG_CMD_PCI
+#define CONFIG_CMD_PCI_ENUM
+#ifdef CONFIG_CMD_PCI
+#define CONFIG_PCI
+#define CONFIG_PCI_PNP
+#define CONFIG_PCI_SCAN_SHOW
+#define CONFIG_PCIE_IMX
+#define CONFIG_PCIE_IMX_PERST_GPIO	IMX_GPIO_NR(4, 11)
+#define CONFIG_PCIE_IMX_POWER_GPIO	IMX_GPIO_NR(6, 10)
+#endif
+
 
 /* Framebuffer */
 #define CONFIG_VIDEO
