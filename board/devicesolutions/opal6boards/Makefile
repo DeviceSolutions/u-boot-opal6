@@ -6,4 +6,5 @@
 # SPDX-License-Identifier:	GPL-2.0+
 #
 
-obj-y  := opal6boards.o
+obj-y  += opal6boards.o
+obj-y  += gpiotest.o
