@@ -389,13 +389,13 @@ static int detect_i2c(struct display_info_t const *dev)
 }
 
 struct display_info_t const displays[] = {{
-	.bus	= 3,
-	.addr	= 0,
-	.pixfmt	= IPU_PIX_FMT_RGB24,
-	.detect	= detect_hdmi,
-	.enable	= do_enable_hdmi,
+	.bus	= 2,
+	.addr	= 0x4,
+	.pixfmt	= IPU_PIX_FMT_LVDS666,
+	.detect	= detect_i2c,
+	.enable	= enable_lvds,
 	.mode	= {
-		.name           = "HDMI",
+		.name           = "Hannstar-XGA",
 		.refresh        = 60,
 		.xres           = 1024,
 		.yres           = 768,
@@ -409,13 +409,13 @@ struct display_info_t const displays[] = {{
 		.sync           = FB_SYNC_EXT,
 		.vmode          = FB_VMODE_NONINTERLACED
 } }, {
-	.bus	= 2,
-	.addr	= 0x1,
-	.pixfmt	= IPU_PIX_FMT_LVDS666,
-	.detect	= NULL,
-	.enable	= enable_lvds,
+	.bus	= 3,
+	.addr	= 0,
+	.pixfmt	= IPU_PIX_FMT_RGB24,
+	.detect	= detect_hdmi,
+	.enable	= do_enable_hdmi,
 	.mode	= {
-		.name           = "Hannstar-XGA",
+		.name           = "HDMI",
 		.refresh        = 60,
 		.xres           = 1024,
 		.yres           = 768,
