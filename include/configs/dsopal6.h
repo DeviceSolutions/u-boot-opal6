@@ -310,13 +310,15 @@
 
 #define CONFIG_ENV_SIZE			(8 * 1024)
 
-#if defined(CONFIG_ENV_IS_IN_MMC)
-#define CONFIG_DEFAULT_FDT_FILE	"imx6dl-opal-6.dtb"
 #define CONFIG_SYS_FSL_USDHC_NUM	2
+#define CONFIG_DEFAULT_FDT_FILE	"imx6dl-opal-6.dtb"
+
+#if defined(CONFIG_ENV_IS_IN_MMC)
 #define CONFIG_SYS_MMC_ENV_DEV		1	/* SDHC4 */
 #define CONFIG_ENV_OFFSET		(6 * 64 * 1024)
-#define CONFIG_SUPPORT_EMMC_BOOT /* eMMC specific */
+#define CONFIG_SUPPORT_EMMC_BOOT 
 #endif
+
 #define CONFIG_OF_LIBFDT
 
 #ifndef CONFIG_SYS_DCACHE_OFF
