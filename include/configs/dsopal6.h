@@ -180,94 +180,30 @@
 #define SF_ENV ""
 #endif
 
+#ifdef CONFIG_ENV_IS_NOWHERE  /* manufacturing only! */
 #define CONFIG_EXTRA_ENV_SETTINGS \
-	"script=boot.scr\0" \
-	"image=zImage\0" \
-	"fdt_file=" CONFIG_DEFAULT_FDT_FILE "\0" \
-	"fdt_addr=0x18000000\0" \
-	"boot_fdt=try\0" \
-	"ip_dyn=yes\0" \
-	"console=" CONFIG_CONSOLE_DEV "\0" \
-	"fdt_high=0xffffffff\0"	  \
-	"initrd_high=0xffffffff\0" \
-	"mmcdev=" __stringify(CONFIG_SYS_MMC_ENV_DEV) "\0" \
-	"mmcpart=1\0" \
-	"mmcroot=" CONFIG_MMCROOT " rootwait rw\0" \
-	"update_sd_firmware=" \
-		"if test ${ip_dyn} = yes; then " \
-			"setenv get_cmd dhcp; " \
-		"else " \
-			"setenv get_cmd tftp; " \
-		"fi; " \
-		"if mmc dev ${mmcdev}; then "	\
-			"if ${get_cmd} ${update_sd_firmware_filename}; then " \
-				"setexpr fw_sz ${filesize} / 0x200; " \
-				"setexpr fw_sz ${fw_sz} + 1; "	\
-				"mmc write ${loadaddr} 0x2 ${fw_sz}; " \
-			"fi; "	\
-		"fi\0" \
-	EMMC_ENV	  \
-	SF_ENV	  \
-	"mmcargs=setenv bootargs console=${console},${baudrate} " \
-		"root=${mmcroot}\0" \
-	"loadbootscript=" \
-		"fatload mmc ${mmcdev}:${mmcpart} ${loadaddr} ${script};\0" \
-	"bootscript=echo Running bootscript from mmc ...; " \
-		"source\0" \
-	"loadimage=fatload mmc ${mmcdev}:${mmcpart} ${loadaddr} ${image}\0" \
-	"loadfdt=fatload mmc ${mmcdev}:${mmcpart} ${fdt_addr} ${fdt_file}\0" \
-	"mmcboot=echo Booting from mmc ...; " \
-		"run mmcargs; " \
-		"if test ${boot_fdt} = yes || test ${boot_fdt} = try; then " \
-			"if run loadfdt; then " \
-				"bootz ${loadaddr} - ${fdt_addr}; " \
-			"else " \
-				"if test ${boot_fdt} = try; then " \
-					"bootz; " \
-				"else " \
-					"echo WARN: Cannot load the DT; " \
-				"fi; " \
-			"fi; " \
-		"else " \
-			"bootz; " \
-		"fi;\0" \
-	"netargs=setenv bootargs console=${console},${baudrate} " \
-		"root=/dev/nfs " \
-		"ip=dhcp nfsroot=${serverip}:${nfsroot},v3,tcp\0" \
-	"netboot=echo Booting from net ...; " \
-		"run netargs; " \
-		"if test ${ip_dyn} = yes; then " \
-			"setenv get_cmd dhcp; " \
-		"else " \
-			"setenv get_cmd tftp; " \
-		"fi; " \
-		"${get_cmd} ${image}; " \
-		"if test ${boot_fdt} = yes || test ${boot_fdt} = try; then " \
-			"if ${get_cmd} ${fdt_addr} ${fdt_file}; then " \
-				"bootz ${loadaddr} - ${fdt_addr}; " \
-			"else " \
-				"if test ${boot_fdt} = try; then " \
-					"bootz; " \
-				"else " \
-					"echo WARN: Cannot load the DT; " \
-				"fi; " \
-			"fi; " \
-		"else " \
-			"bootz; " \
-		"fi;\0"
+    "video=mxcfb0:dev=ldb,LDB-XGA,if=RGB666 video=mxcfb1:dev=hdmi,1920x1080M@60,if=RGB24 video=mxcfb2:off video=mxcfb3:off ldb=sep0\0" \
+    "mmcargs=setenv bootargs enable_wait_mode=off ${video} console=ttymxc3,115200 consoleblank=0 vmalloc=400M fbmem=28M rootfstype=ramfs rdinit=/sbin/init\0"
 
 #define CONFIG_BOOTCOMMAND \
-	"mmc dev ${mmcdev};" \
-	"if mmc rescan; then " \
-		"if run loadbootscript; then " \
-		"run bootscript; " \
-		"else " \
-			"if run loadimage; then " \
-				"run mmcboot; " \
-			"else run netboot; " \
-			"fi; " \
-		"fi; " \
-	"else run netboot; fi"
+    "run mmcargs; " \
+    "mmc dev 0; " \
+    "fatload mmc 0 0x12000000 imx6dl-opaldk.dtb; " \
+    "fatload mmc 0 0x10008000 uImage-factory; " \
+    "bootm 0x10008000 - 0x12000000"
+#else  /* release settings */
+#define CONFIG_EXTRA_ENV_SETTINGS \
+    "video=mxcfb0:dev=ldb,LDB-XGA,if=RGB666 video=mxcfb1:dev=hdmi,1920x1080M@60,if=RGB24 video=mxcfb2:off video=mxcfb3:off ldb=sep0\0" \
+    "mmcargs=setenv bootargs enable_wait_mode=off ${video} console=ttymxc3,115200 consoleblank=0 vmalloc=400M fbmem=28M root=/dev/mmcblk2p2\0"
+
+#define CONFIG_BOOTCOMMAND \
+    "run mmcargs; " \
+    "mmc dev 1; " \
+    "fatload mmc 1 0x12000000 imx6dl-opaldk.dtb; " \
+    "fatload mmc 1 0x10008000 uImage; " \
+    "bootm 0x10008000 - 0x12000000"
+#endif
+
 
 #define CONFIG_ARP_TIMEOUT     200UL
 
@@ -316,7 +252,7 @@
 #if defined(CONFIG_ENV_IS_IN_MMC)
 #define CONFIG_SYS_MMC_ENV_DEV		1	/* SDHC4 */
 #define CONFIG_ENV_OFFSET		(1 * 1024 * 1024)
-#define CONFIG_SUPPORT_EMMC_BOOT 
+#define CONFIG_SUPPORT_EMMC_BOOT
 #endif
 
 #define CONFIG_OF_LIBFDT
@@ -338,6 +274,7 @@
 #define CONFIG_G_DNL_MANUFACTURER "Device Solutions"
 
 /* PCI express */
+/*
 #define CONFIG_CMD_PCI
 #define CONFIG_CMD_PCI_ENUM
 #ifdef CONFIG_CMD_PCI
@@ -348,7 +285,7 @@
 #define CONFIG_PCIE_IMX_PERST_GPIO	IMX_GPIO_NR(4, 11)
 #define CONFIG_PCIE_IMX_POWER_GPIO	IMX_GPIO_NR(6, 10)
 #endif
-
+*/
 
 /* Framebuffer */
 #define CONFIG_VIDEO
