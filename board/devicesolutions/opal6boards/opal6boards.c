@@ -376,11 +376,13 @@ static void disable_lvds(struct display_info_t const *dev)
 		     IOMUXC_GPR2_LVDS_CH0_MODE_MASK);
 }
 
+#ifdef CONFIG_IMX_HDMI
 static void do_enable_hdmi(struct display_info_t const *dev)
 {
 	disable_lvds(dev);
 	imx_enable_hdmi_phy();
 }
+#endif
 
 static int detect_i2c(struct display_info_t const *dev)
 {
@@ -408,7 +410,9 @@ struct display_info_t const displays[] = {{
 		.vsync_len      = 10,
 		.sync           = FB_SYNC_EXT,
 		.vmode          = FB_VMODE_NONINTERLACED
-} }, {
+} }
+#ifdef CONFIG_IMX_HDMI
+, {
 	.bus	= 3,
 	.addr	= 0,
 	.pixfmt	= IPU_PIX_FMT_RGB24,
@@ -428,7 +432,9 @@ struct display_info_t const displays[] = {{
 		.vsync_len      = 10,
 		.sync           = FB_SYNC_EXT,
 		.vmode          = FB_VMODE_NONINTERLACED
-} } };
+} }
+#endif
+};
 size_t display_count = ARRAY_SIZE(displays);
 
 static void setup_display(void)
@@ -438,7 +444,9 @@ static void setup_display(void)
 	int reg;
 
 	enable_ipu_clock();
+#ifdef CONFIG_IMX_HDMI
 	imx_setup_hdmi();
+#endif
 
 	/* Turn on LDB0, IPU,IPU DI0 clocks */
 	setbits_le32(&mxc_ccm->CCGR3,
@@ -525,9 +533,9 @@ static unsigned gpios_out_low[] = {
 	IMX_GPIO_NR(3, 4),	/* LED R1 */
 	IMX_GPIO_NR(3, 14),	/* LED R2 */
 	IMX_GPIO_NR(4, 11),	/* PCIE_RST_B */
-	IMX_GPIO_NR(6, 10),	/* PCIE_PWR_EN */	
+	IMX_GPIO_NR(6, 10),	/* PCIE_PWR_EN */
 	IMX_GPIO_NR(2, 0),	/* OUTPUT 1 */
-	IMX_GPIO_NR(2, 1),	/* OUTPUT 2 */	
+	IMX_GPIO_NR(2, 1),	/* OUTPUT 2 */
 };
 
 static unsigned gpios_out_high[] = {
