@@ -1617,4 +1617,30 @@ int mmc_set_rst_n_function(struct mmc *mmc, u8 enable)
 	return mmc_switch(mmc, EXT_CSD_CMD_SET_NORMAL, EXT_CSD_RST_N_FUNCTION,
 			  enable);
 }
+
+int mmc_set_bootpart_access(struct mmc *mmc)
+{
+    ALLOC_CACHE_ALIGN_BUFFER(u8, ext_csd, MMC_MAX_BLOCK_LEN);
+	int err;
+
+    /* get current ECSD values */
+	err = mmc_send_ext_csd(mmc, ext_csd);
+	if (err)
+		return err;
+
+    /* allow boot partition 1 access */
+    err = mmc_switch(mmc, EXT_CSD_CMD_SET_NORMAL, EXT_CSD_PART_CONF,
+                     (ext_csd[EXT_CSD_PART_CONF] | 0x01));
+    if (err)
+        return err;
+
+    /* disable boot partition write protection */
+    err = mmc_switch(mmc, EXT_CSD_CMD_SET_NORMAL, EXT_CSD_BOOT_WP, 0);
+    if (err)
+        return err;
+
+    printf("Access to boot partition enabled\n");
+
+    return 0;
+}
 #endif

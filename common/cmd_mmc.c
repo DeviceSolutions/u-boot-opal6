@@ -563,6 +563,29 @@ static int do_mmc_rst_func(cmd_tbl_t *cmdtp, int flag,
 
 	return mmc_set_rst_n_function(mmc, enable);
 }
+
+static int do_mmc_boot_wp(cmd_tbl_t *cmdtp, int flag,
+			   int argc, char * const argv[])
+{
+	int dev;
+	struct mmc *mmc;
+
+	if (argc != 2)
+		return CMD_RET_USAGE;
+
+	dev = simple_strtoul(argv[1], NULL, 10);
+
+	mmc = init_mmc_device(dev, false);
+	if (!mmc)
+		return CMD_RET_FAILURE;
+
+	if (IS_SD(mmc)) {
+		puts("BOOT_WP only exists on eMMC\n");
+		return CMD_RET_FAILURE;
+	}
+
+	return mmc_set_bootpart_access(mmc);
+}
 #endif
 static int do_mmc_setdsr(cmd_tbl_t *cmdtp, int flag,
 			 int argc, char * const argv[])
@@ -606,6 +629,7 @@ static cmd_tbl_t cmd_mmc[] = {
 	U_BOOT_CMD_MKENT(bootpart-resize, 4, 0, do_mmc_boot_resize, "", ""),
 	U_BOOT_CMD_MKENT(partconf, 5, 0, do_mmc_partconf, "", ""),
 	U_BOOT_CMD_MKENT(rst-function, 3, 0, do_mmc_rst_func, "", ""),
+	U_BOOT_CMD_MKENT(enable-boot-write, 2, 0, do_mmc_boot_wp, "", ""),
 #endif
 #ifdef CONFIG_SUPPORT_EMMC_RPMB
 	U_BOOT_CMD_MKENT(rpmb, CONFIG_SYS_MAXARGS, 1, do_mmcrpmb, "", ""),
@@ -660,6 +684,8 @@ U_BOOT_CMD(
 	"mmc rst-function dev value\n"
 	" - Change the RST_n_FUNCTION field of the specified device\n"
 	"   WARNING: This is a write-once field and 0 / 1 / 2 are the only valid values.\n"
+	"mmc enable-boot-write <dev>\n"
+	" - Enable boot partition write access on device <dev>.\n"
 #endif
 #ifdef CONFIG_SUPPORT_EMMC_RPMB
 	"mmc rpmb read addr blk# cnt [address of auth-key] - block size is 256 bytes\n"

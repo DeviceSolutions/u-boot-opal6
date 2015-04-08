@@ -164,6 +164,7 @@
 #define EXT_CSD_HC_WP_GRP_SIZE		221	/* RO */
 #define EXT_CSD_HC_ERASE_GRP_SIZE	224	/* RO */
 #define EXT_CSD_BOOT_MULT		226	/* RO */
+#define EXT_CSD_BOOT_WP     173 /* R/W */
 
 /*
  * EXT_CSD field definitions
@@ -347,6 +348,8 @@ int mmc_set_part_conf(struct mmc *mmc, u8 ack, u8 part_num, u8 access);
 int mmc_set_boot_bus_width(struct mmc *mmc, u8 width, u8 reset, u8 mode);
 /* Function to modify the RST_n_FUNCTION field of EXT_CSD */
 int mmc_set_rst_n_function(struct mmc *mmc, u8 enable);
+/* Function to enable write access to the boot partition */
+int mmc_set_bootpart_access(struct mmc *mmc);
 /* Functions to read / write the RPMB partition */
 int mmc_rpmb_set_key(struct mmc *mmc, void *key);
 int mmc_rpmb_get_counter(struct mmc *mmc, unsigned long *counter);
