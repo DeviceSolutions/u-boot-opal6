@@ -193,6 +193,9 @@
     "bootm 0x10008000 - 0x12000000"
 #else  /* release settings */
 #define CONFIG_EXTRA_ENV_SETTINGS \
+    "lvds0=setenv video mxcfb0:dev=ldb,LDB-XGA,if=RGB666 video=mxcfb1:dev=hdmi,1920x1080M@60,if=RGB24 video=mxcfb2:off video=mxcfb3:off ldb=sep0\0" \
+    "lvds1=setenv video mxcfb0:dev=ldb,LDB-XGA,if=RGB666 video=mxcfb1:dev=hdmi,1920x1080M@60,if=RGB24 video=mxcfb2:off video=mxcfb3:off ldb=sep1\0" \
+    "hdmi=setenv video video=mxcfb0:dev=hdmi,1920x1080M@60,if=RGB24  video=mxcfb1:off video=mxcfb2:off video=mxcfb3:off ldb=sep0\0" \
     "video=mxcfb0:dev=ldb,LDB-XGA,if=RGB666 video=mxcfb1:dev=hdmi,1920x1080M@60,if=RGB24 video=mxcfb2:off video=mxcfb3:off ldb=sep0\0" \
     "mmcargs=setenv bootargs enable_wait_mode=off ${video} console=ttymxc3,115200 consoleblank=0 vmalloc=400M fbmem=28M root=/dev/mmcblk2p2\0" \
     "update_uboot_from_emmc=" \
