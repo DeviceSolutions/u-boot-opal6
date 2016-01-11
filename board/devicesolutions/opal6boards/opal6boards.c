@@ -641,7 +641,6 @@ int board_late_init(void)
 #ifdef CONFIG_CMD_BMODE
 	add_board_boot_modes(opal6_boot_modes);
 #endif
-
 	return 0;
 }
 

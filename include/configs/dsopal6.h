@@ -113,17 +113,6 @@
 #define CONFIG_PHY_MICREL
 #define CONFIG_PHY_MICREL_KSZ9031
 
-/*#define CONFIG_CMD_SF*/
-#ifdef CONFIG_CMD_SF
-#define CONFIG_SPI_FLASH
-#define CONFIG_SPI_FLASH_SST
-#define CONFIG_MXC_SPI
-#define CONFIG_SF_DEFAULT_BUS		0
-#define CONFIG_SF_DEFAULT_CS		(0 | (IMX_GPIO_NR(2, 30) << 8))
-#define CONFIG_SF_DEFAULT_SPEED		20000000
-#define CONFIG_SF_DEFAULT_MODE		SPI_MODE_0
-#endif
-
 /* allow to overwrite serial and ethaddr */
 #define CONFIG_ENV_OVERWRITE
 #define CONFIG_CONS_INDEX              1
@@ -307,6 +296,7 @@
 */
 
 /* Framebuffer */
+/*
 #define CONFIG_VIDEO
 #define CONFIG_VIDEO_IPUV3
 #define CONFIG_CFB_CONSOLE
@@ -320,9 +310,12 @@
 #define CONFIG_VIDEO_LOGO
 #define CONFIG_VIDEO_BMP_LOGO
 #define CONFIG_IPUV3_CLK 260000000
+*/
 /*#define CONFIG_IMX_HDMI
 #define CONFIG_CMD_HDMIDETECT*/
+
+/*
 #define CONFIG_IMX_VIDEO_SKIP
 #define CONFIG_CMD_BMP
-
+*/
 #endif                         /* __OPAL6_CONFIG_H */
