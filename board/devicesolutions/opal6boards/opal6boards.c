@@ -86,6 +86,8 @@ DECLARE_GLOBAL_DATA_PTR;
 static int board_type = -1;
 #define BOARD_IS_OPAL6S		0
 #define BOARD_IS_OPAL6DL	1
+#define BOARD_IS_OPAL6D		2
+#define BOARD_IS_OPAL6Q		3
 
 int dram_init(void)
 {
@@ -322,6 +324,7 @@ struct i2c_pads_info i2c_pad_info3 = {
 	}
 };
 
+/*
 struct i2c_pads_info i2c_pad_info4 = {
 	.scl = {
 		.i2c_mode = MX6_PAD_NANDF_WP_B__I2C4_SCL
@@ -338,6 +341,7 @@ struct i2c_pads_info i2c_pad_info4 = {
 		.gp = IMX_GPIO_NR(6, 16)
 	}
 };
+*/
 
 iomux_v3_cfg_t const lvds_pads[] = {
 	/* LCD_PWR_EN */
@@ -578,6 +582,12 @@ int board_early_init_f(void)
 	case MXC_CPU_MX6DL:
 		board_type = BOARD_IS_OPAL6DL;
 		break;
+	case MXC_CPU_MX6D:
+		board_type = BOARD_IS_OPAL6D;
+		break;
+	case MXC_CPU_MX6Q:
+		board_type = BOARD_IS_OPAL6Q;
+		break;
 	}
 
 	setup_iomux_uart();
@@ -611,7 +621,7 @@ int board_init(void)
 	/* i2c3 : CSI0, LVDS1 EDID, LVDO0 TOUCH */
 	setup_i2c(2, CONFIG_SYS_I2C_SPEED, 0x7f, &i2c_pad_info3);
 	/* i2c4 : HDMI EDID, Expansion on DevKit */
-	setup_i2c(3, CONFIG_SYS_I2C_SPEED, 0x7f, &i2c_pad_info4);
+/*	setup_i2c(3, CONFIG_SYS_I2C_SPEED, 0x7f, &i2c_pad_info4); */
 #ifdef CONFIG_MXC_SPI
 	setup_spi();
 #endif
