@@ -169,49 +169,58 @@
 #define SF_ENV ""
 #endif
 
-#ifdef CONFIG_ENV_IS_NOWHERE  /* manufacturing only! */
-#define CONFIG_EXTRA_ENV_SETTINGS \
-    "video=mxcfb0:dev=ldb,LDB-XGA,if=RGB666 video=mxcfb1:dev=hdmi,1920x1080M@60,if=RGB24 video=mxcfb2:off video=mxcfb3:off ldb=sep0\0" \
-    "mmcargs=setenv bootargs enable_wait_mode=off ${video} console=ttymxc3,115200 consoleblank=0 vmalloc=400M fbmem=28M rootfstype=ramfs rdinit=/sbin/init\0"
+#ifdef CONFIG_OPAL6_MFGTOOL
+    #define CONFIG_BOOTARGS \
+        "console=ttymxc3,115200 rdinit=/linuxrc " \
+        "g_mass_storage.stall=0 g_mass_storage.removable=1 g_mass_storage.idVendor=0x066F g_mass_storage.idProduct=0x37FF g_mass_storage.iSerialNumber= " \
+        "enable_wait_mode=off"
 
-#define CONFIG_BOOTCOMMAND \
-    "run mmcargs; " \
-    "mmc dev 0; " \
-    "fatload mmc 0 0x12000000 imx6dl-opaldk.dtb; " \
-    "fatload mmc 0 0x10008000 uImage-factory; " \
-    "bootm 0x10008000 - 0x12000000"
+    #define CONFIG_BOOTCOMMAND \
+        "bootm 0x10008000 0x10c00000 0x12000000"
+
+#elif CONFIG_ENV_IS_NOWHERE  /* manufacturing only! */
+    #define CONFIG_EXTRA_ENV_SETTINGS \
+        "video=mxcfb0:dev=ldb,LDB-XGA,if=RGB666 video=mxcfb1:dev=hdmi,1920x1080M@60,if=RGB24 video=mxcfb2:off video=mxcfb3:off ldb=sep0\0" \
+        "mmcargs=setenv bootargs enable_wait_mode=off ${video} console=ttymxc3,115200 consoleblank=0 vmalloc=400M fbmem=28M rootfstype=ramfs rdinit=/sbin/init\0"
+
+    #define CONFIG_BOOTCOMMAND \
+        "run mmcargs; " \
+        "mmc dev 0; " \
+        "fatload mmc 0 0x12000000 imx6q-opaldk.dtb; " \
+        "fatload mmc 0 0x10008000 uImage-factory; " \
+        "bootm 0x10008000 - 0x12000000"
+
 #else  /* release settings */
-#define CONFIG_EXTRA_ENV_SETTINGS \
-    "lvds0=setenv video mxcfb0:dev=ldb,LDB-XGA,if=RGB666 video=mxcfb1:dev=hdmi,1920x1080M@60,if=RGB24 video=mxcfb2:off video=mxcfb3:off ldb=sep0\0" \
-    "lvds1=setenv video mxcfb0:dev=ldb,LDB-XGA,if=RGB666 video=mxcfb1:dev=hdmi,1920x1080M@60,if=RGB24 video=mxcfb2:off video=mxcfb3:off ldb=sep1\0" \
-    "hdmi=setenv video video=mxcfb0:dev=hdmi,1920x1080M@60,if=RGB24  video=mxcfb1:off video=mxcfb2:off video=mxcfb3:off ldb=sep0\0" \
-    "video=mxcfb0:dev=ldb,LDB-XGA,if=RGB666 video=mxcfb1:dev=hdmi,1920x1080M@60,if=RGB24 video=mxcfb2:off video=mxcfb3:off ldb=sep0\0" \
-    "mmcargs=setenv bootargs enable_wait_mode=off ${video} console=ttymxc3,115200 consoleblank=0 vmalloc=400M fbmem=28M root=/dev/mmcblk2p2\0" \
-    "update_uboot_from_emmc=" \
-        "if fatload mmc 1 ${loadaddr} u-boot.imx; then " \
-            "setexpr fw_sz ${filesize} / 0x200; " \
-            "setexpr fw_sz ${fw_sz} + 1; "	\
-            "mmc dev 1:0; " \
-            "mmc enable-boot-write 1; " \
-            "mmc write ${loadaddr} 0x2 ${fw_sz}; " \
-        "fi\0" \
-    "update_uboot_from_sd=" \
-        "if fatload mmc 0 ${loadaddr} u-boot.imx; then " \
-            "setexpr fw_sz ${filesize} / 0x200; " \
-            "setexpr fw_sz ${fw_sz} + 1; "	\
-            "mmc dev 1:0; " \
-            "mmc enable-boot-write 1; " \
-            "mmc write ${loadaddr} 0x2 ${fw_sz}; " \
-        "fi\0"
+    #define CONFIG_EXTRA_ENV_SETTINGS \
+        "lvds0=setenv video mxcfb0:dev=ldb,LDB-XGA,if=RGB666 video=mxcfb1:dev=hdmi,1920x1080M@60,if=RGB24 video=mxcfb2:off video=mxcfb3:off ldb=sep0\0" \
+        "lvds1=setenv video mxcfb0:dev=ldb,LDB-XGA,if=RGB666 video=mxcfb1:dev=hdmi,1920x1080M@60,if=RGB24 video=mxcfb2:off video=mxcfb3:off ldb=sep1\0" \
+        "hdmi=setenv video video=mxcfb0:dev=hdmi,1920x1080M@60,if=RGB24  video=mxcfb1:off video=mxcfb2:off video=mxcfb3:off ldb=sep0\0" \
+        "video=mxcfb0:dev=ldb,LDB-XGA,if=RGB666 video=mxcfb1:dev=hdmi,1920x1080M@60,if=RGB24 video=mxcfb2:off video=mxcfb3:off ldb=sep0\0" \
+        "mmcargs=setenv bootargs enable_wait_mode=off ${video} console=ttymxc3,115200 consoleblank=0 vmalloc=400M fbmem=28M root=/dev/mmcblk3p3\0" \
+        "update_uboot_from_emmc=" \
+            "if fatload mmc 1 ${loadaddr} u-boot.imx; then " \
+                "setexpr fw_sz ${filesize} / 0x200; " \
+                "setexpr fw_sz ${fw_sz} + 1; "	\
+                "mmc dev 1:0; " \
+                "mmc enable-boot-write 1; " \
+                "mmc write ${loadaddr} 0x2 ${fw_sz}; " \
+            "fi\0" \
+        "update_uboot_from_sd=" \
+            "if fatload mmc 0 ${loadaddr} u-boot.imx; then " \
+                "setexpr fw_sz ${filesize} / 0x200; " \
+                "setexpr fw_sz ${fw_sz} + 1; "	\
+                "mmc dev 1:0; " \
+                "mmc enable-boot-write 1; " \
+                "mmc write ${loadaddr} 0x2 ${fw_sz}; " \
+            "fi\0"
 
-#define CONFIG_BOOTCOMMAND \
-    "run mmcargs; " \
-    "mmc dev 1; " \
-    "fatload mmc 1 0x12000000 imx6dl-opaldk.dtb; " \
-    "fatload mmc 1 0x10008000 uImage; " \
-    "bootm 0x10008000 - 0x12000000"
+    #define CONFIG_BOOTCOMMAND \
+        "run mmcargs; " \
+        "mmc dev 1; " \
+        "fatload mmc 1 0x12000000 imx6q-opaldk.dtb; " \
+        "fatload mmc 1 0x10008000 uImage; " \
+        "bootm 0x10008000 - 0x12000000"
 #endif
-
 
 #define CONFIG_ARP_TIMEOUT     200UL
 
