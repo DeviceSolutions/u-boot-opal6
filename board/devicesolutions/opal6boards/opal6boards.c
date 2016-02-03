@@ -25,6 +25,7 @@
 #include <asm/imx-common/mxc_i2c.h>
 #include <asm/imx-common/video.h>
 #include <i2c.h>
+#include <power/da9063.h>
 #include <mmc.h>
 #include <fsl_esdhc.h>
 #include <miiphy.h>
@@ -571,6 +572,8 @@ int board_eth_init(bd_t *bis)
 	return cpu_eth_init(bis);
 }
 
+
+
 int board_early_init_f(void)
 {
 	u32 cputype = cpu_type(get_cpu_rev());
@@ -591,7 +594,6 @@ int board_early_init_f(void)
 	}
 
 	setup_iomux_uart();
-
 	set_gpios(gpios_out_high, ARRAY_SIZE(gpios_out_high), 1);
 	set_gpios(gpios_out_low, ARRAY_SIZE(gpios_out_low), 0);
 	imx_iomux_v3_setup_multiple_pads(init_pads, ARRAY_SIZE(init_pads));
@@ -610,6 +612,63 @@ int board_early_init_f(void)
 	return 0;
 }
 
+
+
+
+
+int setup_pmic(void)
+{
+	int result = 0;
+
+	for(;;)
+	{
+		/* LDO2 - 1.2V */	
+		if( da9063_set_register( DA9063_VLDO2_A_ADDR, 0x1E, 0) )
+		{
+			puts("Failed to configure LDO2 voltage A to 1.2V.\n");
+			break;
+		}
+
+		if( da9063_set_register( DA9063_VLDO2_B_ADDR, 0x1E, 0) )
+		{
+			puts("Failed to configure LDO2 voltage B to 1.2V.\n");
+			break;
+		}
+
+		if( da9063_set_register( DA9063_VLDO2_CONT_ADDR, 0x01, 0x01) )
+		{
+			puts("Failed to enable LDO2.\n");
+			break;
+		}
+		puts("LDO2 voltage set to 1.2V.\n");
+
+		/* LDO3 - 1.2V */	
+		if( da9063_set_register( DA9063_VLDO3_A_ADDR, 0x1E, 0) )
+		{
+			puts("Failed to configure LDO3 voltage A to 1.2V.\n");
+			break;
+		}
+
+		if( da9063_set_register( DA9063_VLDO3_B_ADDR, 0x1E, 0) )
+		{
+			puts("Failed to configure LDO3 voltage B to 1.2V.\n");
+			break;
+		}
+
+		if( da9063_set_register( DA9063_VLDO3_CONT_ADDR, 0x01, 0x01) )
+		{
+			puts("Failed to enable LDO3.\n");
+			break;
+		}
+		puts("LDO3 voltage set to 1.2V.\n");
+		
+		result = 1;
+		break;
+	}
+
+	return result;	
+}
+
 int board_init(void)
 {
 	/* address of boot parameters */
@@ -625,6 +684,13 @@ int board_init(void)
 #ifdef CONFIG_MXC_SPI
 	setup_spi();
 #endif
+
+	/* Check for DA9063 and power on Ethernet - LDO2 and 3 to 1.2V */
+	if( da9063_detect() == 1 )
+	{
+		puts("DA9063 detected - setting up 1.2V rails for Ethernet\n");
+		setup_pmic();				
+	}
 	return 0;
 }
 
