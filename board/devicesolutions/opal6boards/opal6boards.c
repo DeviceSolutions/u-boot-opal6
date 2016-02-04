@@ -622,7 +622,7 @@ int setup_pmic(void)
 
 	for(;;)
 	{
-		/* LDO2 - 1.2V */	
+		/* LDO2 - 1.2V */
 		if( da9063_set_register( DA9063_VLDO2_A_ADDR, 0x1E, 0) )
 		{
 			puts("Failed to configure LDO2 voltage A to 1.2V.\n");
@@ -642,7 +642,7 @@ int setup_pmic(void)
 		}
 		puts("LDO2 voltage set to 1.2V.\n");
 
-		/* LDO3 - 1.2V */	
+		/* LDO3 - 1.2V */
 		if( da9063_set_register( DA9063_VLDO3_A_ADDR, 0x1E, 0) )
 		{
 			puts("Failed to configure LDO3 voltage A to 1.2V.\n");
@@ -661,12 +661,12 @@ int setup_pmic(void)
 			break;
 		}
 		puts("LDO3 voltage set to 1.2V.\n");
-		
+
 		result = 1;
 		break;
 	}
 
-	return result;	
+	return result;
 }
 
 int board_init(void)
@@ -689,7 +689,7 @@ int board_init(void)
 	if( da9063_detect() == 1 )
 	{
 		puts("DA9063 detected - setting up 1.2V rails for Ethernet\n");
-		setup_pmic();				
+		setup_pmic();
 	}
 	return 0;
 }
@@ -713,7 +713,9 @@ int board_late_init(void)
 int checkboard(void)
 {
 	puts("Board: ");
-	if (board_type == BOARD_IS_OPAL6DL)
+	if (board_type == BOARD_IS_OPAL6Q)
+		puts("Opal6Q\n");
+	else if (board_type == BOARD_IS_OPAL6DL)
 		puts("Opal6DL\n");
 	else if (board_type == BOARD_IS_OPAL6S)
 		puts("Opal6S\n");

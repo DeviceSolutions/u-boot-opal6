@@ -171,7 +171,8 @@
 #define SF_ENV ""
 #endif
 
-#ifdef CONFIG_OPAL6_MFGTOOL
+#if defined(CONFIG_OPAL6_MFGTOOL)
+
     #define CONFIG_BOOTARGS \
         "console=ttymxc3,115200 rdinit=/linuxrc " \
         "g_mass_storage.stall=0 g_mass_storage.removable=1 g_mass_storage.idVendor=0x066F g_mass_storage.idProduct=0x37FF g_mass_storage.iSerialNumber= " \
@@ -180,19 +181,32 @@
     #define CONFIG_BOOTCOMMAND \
         "bootm 0x10008000 0x10c00000 0x12000000"
 
-#elif CONFIG_ENV_IS_NOWHERE  /* manufacturing only! */
+#elif defined(CONFIG_OPAL6_SD_PROGRAMMER)
+
     #define CONFIG_EXTRA_ENV_SETTINGS \
         "video=mxcfb0:dev=ldb,LDB-XGA,if=RGB666 video=mxcfb1:dev=hdmi,1920x1080M@60,if=RGB24 video=mxcfb2:off video=mxcfb3:off ldb=sep0\0" \
         "mmcargs=setenv bootargs enable_wait_mode=off ${video} console=ttymxc3,115200 consoleblank=0 vmalloc=400M fbmem=28M rootfstype=ramfs rdinit=/sbin/init\0"
 
+#ifdef CONFIG_MX6Q
     #define CONFIG_BOOTCOMMAND \
         "run mmcargs; " \
         "mmc dev 0; " \
         "fatload mmc 0 0x12000000 imx6q-opaldk.dtb; " \
         "fatload mmc 0 0x10008000 uImage-factory; " \
         "bootm 0x10008000 - 0x12000000"
+#endif
+
+#ifdef CONFIG_MX6DL
+    #define CONFIG_BOOTCOMMAND \
+        "run mmcargs; " \
+        "mmc dev 0; " \
+        "fatload mmc 0 0x12000000 imx6dl-opaldk.dtb; " \
+        "fatload mmc 0 0x10008000 uImage-factory; " \
+        "bootm 0x10008000 - 0x12000000"
+#endif
 
 #else  /* release settings */
+
     #define CONFIG_EXTRA_ENV_SETTINGS \
         "lvds0=setenv video mxcfb0:dev=ldb,LDB-XGA,if=RGB666 video=mxcfb1:dev=hdmi,1920x1080M@60,if=RGB24 video=mxcfb2:off video=mxcfb3:off ldb=sep0\0" \
         "lvds1=setenv video mxcfb0:dev=ldb,LDB-XGA,if=RGB666 video=mxcfb1:dev=hdmi,1920x1080M@60,if=RGB24 video=mxcfb2:off video=mxcfb3:off ldb=sep1\0" \
@@ -216,12 +230,24 @@
                 "mmc write ${loadaddr} 0x2 ${fw_sz}; " \
             "fi\0"
 
+#ifdef CONFIG_MX6Q
     #define CONFIG_BOOTCOMMAND \
         "run mmcargs; " \
         "mmc dev 1; " \
         "fatload mmc 1 0x12000000 imx6q-opaldk.dtb; " \
         "fatload mmc 1 0x10008000 uImage; " \
         "bootm 0x10008000 - 0x12000000"
+#endif
+
+#ifdef CONFIG_MX6DL
+    #define CONFIG_BOOTCOMMAND \
+        "run mmcargs; " \
+        "mmc dev 1; " \
+        "fatload mmc 1 0x12000000 imx6dl-opaldk.dtb; " \
+        "fatload mmc 1 0x10008000 uImage; " \
+        "bootm 0x10008000 - 0x12000000"
+#endif
+
 #endif
 
 #define CONFIG_ARP_TIMEOUT     200UL
