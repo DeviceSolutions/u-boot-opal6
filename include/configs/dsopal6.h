@@ -212,8 +212,10 @@
         "lvds1=setenv video mxcfb0:dev=ldb,LDB-XGA,if=RGB666 video=mxcfb1:dev=hdmi,1920x1080M@60,if=RGB24 video=mxcfb2:off video=mxcfb3:off ldb=sep1\0" \
         "hdmi=setenv video video=mxcfb0:dev=hdmi,1920x1080M@60,if=RGB24  video=mxcfb1:off video=mxcfb2:off video=mxcfb3:off ldb=sep0\0" \
         "video=mxcfb0:dev=ldb,LDB-XGA,if=RGB666 video=mxcfb1:dev=hdmi,1920x1080M@60,if=RGB24 video=mxcfb2:off video=mxcfb3:off ldb=sep0\0" \
-        "mmcargs=setenv bootargs enable_wait_mode=off ${video} console=ttymxc3,115200 consoleblank=0 vmalloc=400M fbmem=28M root=/dev/mmcblk3p3\0" \
-        "update_uboot_from_emmc=" \
+        "rootfs=/dev/mmcblk3p3 rw\0" \
+        "mmcargs=setenv bootargs enable_wait_mode=off ${video} console=ttymxc3,115200 consoleblank=0 vmalloc=400M fbmem=28M root=${rootfs}\0"
+
+        /*"update_uboot_from_emmc=" \
             "if fatload mmc 1 ${loadaddr} u-boot.imx; then " \
                 "setexpr fw_sz ${filesize} / 0x200; " \
                 "setexpr fw_sz ${fw_sz} + 1; "	\
@@ -228,7 +230,7 @@
                 "mmc dev 1:0; " \
                 "mmc enable-boot-write 1; " \
                 "mmc write ${loadaddr} 0x2 ${fw_sz}; " \
-            "fi\0"
+            "fi\0"*/
 
 #ifdef CONFIG_MX6Q
     #define CONFIG_BOOTCOMMAND \
