@@ -642,8 +642,16 @@ void imx_pcie_init(void)
 	}
 }
 
+void imx_pcie_reset(void)
+{
+	imx6_pcie_assert_core_reset();
+	imx6_pcie_init_phy();
+	imx6_pcie_deassert_core_reset();
+}
+
 /* Probe function. */
 void pci_init_board(void)
 {
-	imx_pcie_init();
+	//imx_pcie_init();
+	imx_pcie_reset();
 }
