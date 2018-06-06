@@ -1,8 +1,5 @@
 /*
- * Copyright (C) 2014 Eukréa Electromatique
- * Author: Eric Bénard <eric@eukrea.com>
- *         Fabio Estevam <fabio.estevam@freescale.com>
- *         Jon Nettleton <jon.nettleton@gmail.com>
+ * Copyright (C) 2018 Device Solutions Ltd
  *
  * based on sabresd.c which is :
  * Copyright (C) 2012 Freescale Semiconductor, Inc.
