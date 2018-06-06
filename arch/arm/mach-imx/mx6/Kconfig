@@ -341,6 +341,13 @@ config TARGET_NITROGEN6X
 	imply USB_ETHER_SMSC95XX
 	imply USB_ETHER_MCS7830
 
+config TARGET_DEVICESOLUTIONSOPAL6BOARDS
+	bool "opal6boards"
+	imply USB_HOST_ETHER
+	imply USB_ETHER_ASIX
+	imply USB_ETHER_SMSC95XX
+	imply USB_ETHER_MCS7830
+
 config TARGET_OPOS6ULDEV
 	bool "Armadeus OPOS6ULDev board"
 	select MX6UL_OPOS6UL
@@ -475,6 +482,7 @@ source "board/boundary/nitrogen6x/Kconfig"
 source "board/ccv/xpress/Kconfig"
 source "board/compulab/cm_fx6/Kconfig"
 source "board/congatec/cgtqmx6eval/Kconfig"
+source "board/devicesolutions/opal6boards/Kconfig"
 source "board/dhelectronics/dh_imx6/Kconfig"
 source "board/el/el6x/Kconfig"
 source "board/embest/mx6boards/Kconfig"

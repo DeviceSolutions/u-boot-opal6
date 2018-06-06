@@ -213,9 +213,6 @@
 
 #define CONFIG_SYS_LOAD_ADDR           CONFIG_LOADADDR
 
-#define CONFIG_CMDLINE_EDITING
-/*#define CONFIG_STACKSIZE               (128 * 1024) */
-
 /* Physical Memory Map */
 #define CONFIG_NR_DRAM_BANKS           1
 #define PHYS_SDRAM                     MMDC0_ARB_BASE_ADDR
@@ -256,9 +253,6 @@
 
 #define CONFIG_DRIVE_TYPES CONFIG_DRIVE_MMC CONFIG_DRIVE_USB
 #define CONFIG_UMSDEVS CONFIG_DRIVE_MMC
-
-#define CONFIG_USB_FUNCTION_MASS_STORAGE
-
 
 /* PCI express */
 #define CONFIG_CMD_PCI
