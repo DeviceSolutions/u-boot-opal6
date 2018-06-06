@@ -1,0 +1,12 @@
+if TARGET_DEVICESOLUTIONSOPAL6BOARDS
+
+config SYS_BOARD
+	default "opal6boards"
+
+config SYS_VENDOR
+	default "devicesolutions"
+
+config SYS_CONFIG_NAME
+	default "opal6boards"
+
+endif

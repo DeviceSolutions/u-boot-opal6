@@ -1,0 +1,8 @@
+MX6BOARDS BOARD
+M:	Martin Welford <martin@device.solutions>
+S:	Maintained
+F:	board/devicesolutions/opal6x/
+F:	include/configs/opal6x.h
+F:	configs/opal6dl_defconfig
+F:	configs/opal6q_defconfig
+
