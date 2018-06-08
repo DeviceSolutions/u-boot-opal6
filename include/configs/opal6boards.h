@@ -19,7 +19,7 @@
 #define CONFIG_SYS_GENERIC_BOARD
 
 /* Size of malloc() pool */
-#define CONFIG_SYS_MALLOC_LEN		(10 * SZ_1M)
+#define CONFIG_SYS_MALLOC_LEN		(20 * SZ_1M)
 
 #define CONFIG_BOARD_LATE_INIT
 #define CONFIG_USBD_HS
@@ -82,6 +82,12 @@
 #else
 #define CONFIG_DRIVE_USB
 #endif
+
+#define CONFIG_USB_GADGET_MASS_STORAGE
+
+
+#define CONFIG_DFU_ENV_SETTINGS \
+	"dfu_alt_info=boot raw 0x2 0x400 mmcpart 1\0" \
 
 #ifdef CONFIG_SUPPORT_EMMC_BOOT
 #define EMMC_ENV \
