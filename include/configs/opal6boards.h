@@ -30,7 +30,6 @@
 
 /*//#define CONFIG_CONSOLE_DEV		"ttymxc1" */
 #define CONFIG_MMCROOT			"/dev/mmcblk1p1"
-#define PHYS_SDRAM_SIZE		(1u * 1024 * 1024 * 1024)
 
 
 /* I2C Configs */
@@ -249,13 +248,15 @@
 #define CONFIG_ENV_FAT_DEVICE_AND_PART         "1.1"
 #define CONFIG_ENV_FAT_FILE                    "uboot.env"
 #define CONFIG_FAT_WRITE
-#define CONFIG_SUPPORT_EMMC_BOOT  
+
 */
 /*#define CONFIG_BOOT_PARTITION_ACCESS*/
 
 #define CONFIG_ENV_OFFSET		(1 * 1024 * 1024) 
 
 #endif
+
+#define CONFIG_SUPPORT_EMMC_BOOT  
 
 #define CONFIG_DRIVE_TYPES CONFIG_DRIVE_MMC CONFIG_DRIVE_USB
 #define CONFIG_UMSDEVS CONFIG_DRIVE_MMC
