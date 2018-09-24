@@ -463,6 +463,7 @@ static int imx6_pcie_assert_core_reset(bool prepare_for_boot)
 
 		gpr1 = readl(&iomuxc_regs->gpr[1]);
 		gpr12 = readl(&iomuxc_regs->gpr[12]);
+		/*
 		if ((gpr1 & IOMUXC_GPR1_PCIE_REF_CLK_EN) &&
 		    (gpr12 & IOMUXC_GPR12_PCIE_CTL_2)) {
 			val = readl(MX6_DBI_ADDR + PCIE_PL_PFLR);
@@ -476,6 +477,7 @@ static int imx6_pcie_assert_core_reset(bool prepare_for_boot)
 			gpr12 &= ~IOMUXC_GPR12_PCIE_CTL_2;
 			writel(val, &iomuxc_regs->gpr[12]);
 		}
+		*/
 	}
 	setbits_le32(&iomuxc_regs->gpr[1], IOMUXC_GPR1_TEST_POWERDOWN);
 	clrbits_le32(&iomuxc_regs->gpr[1], IOMUXC_GPR1_REF_SSP_EN);
